@@ -40,7 +40,7 @@ idxM = mMale > 0
 idxLargeMale = mMale > 750
 idxLargeFemale = mFemale > 750
 
-# See reults 
+# See results 
 print('Female: ', sum(mFemale[idxF]))
 print('Male  : ', sum(mMale[idxM]))
 print('Schools with males in Alg II  : ', sum(idxM))
@@ -55,8 +55,8 @@ print('School with large Alg II FEMALE enrollment: ',funGetSublist(idxLargeMale,
 # Visualize results
 plt.figure(1)
 plt.hist(mMale[idxM], 50)
-plt.show()
+plt.savefig('./figure/test1.png')
 plt.figure(2)
 plt.hist(mFemale[idxF], 50)
-plt.show()
+plt.savefig('./figure/test2.png')
 print('stop')
