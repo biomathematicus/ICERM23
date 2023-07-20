@@ -1,122 +1,78 @@
 import numpy as np
+import csv
 
-def find_word_position(sWord, cList):
-    if len(cList) == 0:
-        return -1
-    
-    i = 0
-    for sWord in cList:
+def funCSVCol(sFile, sColumn):
+    with open(sFile, 'r') as file:
+        reader = csv.DictReader(file)
+        if sColumn in reader.fieldnames:
+            return [row[sColumn] for row in reader]
+        else:
+            return None
+
+def funWordPos(sWord, cList):
+    i = -1
+    for sItem in cList:
         i += 1 
-        if w == sWord:
+        if sItem == sWord:
             return i
-    
-    return -1  # Word not found
+    return i
 
+def funStr2Lst(s):
+    s = s.replace('"', '')
+    s = s.rstrip('\n')
+    l = s.split(',')   
+    return l
 
-f = open('../data/2017-18-crdc-data/2017-18 Public-Use Files/Data/SCH/CRDC/CSV/Algebra II.csv', "r")
-counter = 0
-i = 0
-for x in f:
-    i = i + 1
-    x = x.replace('"', '')
-    x = x.rstrip('\n')
-    y = x.split(',')    
-    s = 'LEA_STATE_NAME'
-    
-    # s = "SCH_MATHENR_ALG2_HP_F"  # Word to search
-    # y = ['"LEA_STATE","LEA_STATE_NAME","LEAID","LEA_NAME","SCHID","SCH_NAME","COMBOKEY","JJ","SCH_MATHCLASSES_ALG2","SCH_MATHCERT_ALG2","SCH_MATHENR_ALG2_HI_M","SCH_MATHENR_ALG2_HI_F","SCH_MATHENR_ALG2_AM_M","SCH_MATHENR_ALG2_AM_F","SCH_MATHENR_ALG2_AS_M","SCH_MATHENR_ALG2_AS_F","SCH_MATHENR_ALG2_HP_M","SCH_MATHENR_ALG2_HP_F","SCH_MATHENR_ALG2_BL_M","SCH_MATHENR_ALG2_BL_F","SCH_MATHENR_ALG2_WH_M","SCH_MATHENR_ALG2_WH_F","SCH_MATHENR_ALG2_TR_M","SCH_MATHENR_ALG2_TR_F","TOT_MATHENR_ALG2_M","TOT_MATHENR_ALG2_F","SCH_MATHENR_ALG2_LEP_M","SCH_MATHENR_ALG2_LEP_F","SCH_MATHENR_ALG2_IDEA_M","SCH_MATHENR_ALG2_IDEA_F"\n']
+def funColumn(nCol, bNum, sFile):
+    out = []
+    with open(sFile) as oFile:
+        next(oFile)
+        for s in oFile:
+            l = funStr2Lst(s) 
+            out.append(l[nCol])   
+    if bNum: 
+        out = [int(x) for x in out]
+    return out    
 
-    position = find_word_position(s, y)
-    print("Position:", position)
+def funHeader(sFile):
+    f = open(sFile, "r")
+    cHeader = funStr2Lst(f.read())
+    f.close()
+    return cHeader
 
+def funFile2Lst(cVar, cType, sFile):
+    out = []
+    cHeader = funHeader(sFile)
+    i = 0
+    for s in cVar:
+        n = funWordPos(s, cHeader)
+        cCol = funColumn(n,cType[i],sFile)
+        out.append(cCol)
+        i += 1
+    return out
 
-    #if  1==2: # x[0] == "9" and x[25:27] == "74":
-    #    var1 = np.append(var1,x[13])   
-    #    i = i + 1
-print(i)
+sFile = '../data/2017-18-crdc-data/2017-18 Public-Use Files/Data/SCH/CRDC/CSV/Algebra II.csv'
+cVar = ['LEA_STATE',
+'LEA_STATE_NAME',
+'LEAID',
+'LEA_NAME',
+'SCHID',
+'SCH_NAME',
+'COMBOKEY',
+'TOT_MATHENR_ALG2_M',
+'TOT_MATHENR_ALG2_F']
+cNumType = [0,0,0,0,0,0,0,1,1]
 
+#First, using libraries
+cData = funCSVCol(sFile, 'TOT_MATHENR_ALG2_M')
 
+cData = funFile2Lst(cVar, cNumType, sFile)
+mFemale = np.array(cData[8])
+mMale = np.array(cData[7])
+idxF = mFemale != -9
+idxM = mMale != -9
+print('Female: ', sum(mFemale[idxF]))
+print('Male  : ', sum(mMale[idxM]))
+print('Districts with males in Alg II  : ', sum(idxM))
+print('Districts with females in Alg II: ', sum(idxF))
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-'''
-
-
-x = np.linspace(0,30,num=31)
-print(x)
-
-
-k=0;
-for i in range(1,11):
-    k=k+1/10;
-print(k)
-print(k==1)
-
-
-# Year is 1969
-def is1969(x):
-    return  x[0] == "9"
-    
-# State is Texas
-def isTexas(x):
-    return x[25:26] == "74"
-    
-# State and County of Occurrence and Residence are the same.
-def isResidentOfCOunty(x): 
-    return x[10] == "1"
-    
-#State and County of Occurrence and Residence are the same, but county is different
-def isResidentOfOtherCOunty(x): 
-    return x[11] == "2"
-
-# State and County of Occurrence and Residence are the same.
-def nLiveBirths(x): 
-    int(x[60:62])
-    
-    
-
-
-
-    if  is1969(x) and isTexas(x) and\
-        (isResidentOfCOunty(x) or isResidentOfOtherCOunty(x))\
-        :            
-        counter = counter + nLiveBirths(x)
-        counter = counter + 1
-'''    
