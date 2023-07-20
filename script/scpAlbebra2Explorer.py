@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 import csv
 
 def funCSVCol(sFile, sColumn):
@@ -88,10 +89,16 @@ cNumType = [0,0,0,0,0,0,0,1,1]
 cData = funFile2Lst(cVar, cNumType, sFile)
 mFemale = np.array(cData[8])
 mMale = np.array(cData[7])
-idxF = mFemale != -9
-idxM = mMale != -9
+idxF = mFemale > 0
+idxM = mMale > 0
 print('Female: ', sum(mFemale[idxF]))
 print('Male  : ', sum(mMale[idxM]))
 print('Schools with males in Alg II  : ', sum(idxM))
 print('Schools with females in Alg II: ', sum(idxF))
 
+#counts, bins = np.histogram(mMale[idxM])
+#plt.stairs(counts, bins)
+
+h = plt.hist(mMale[idxM], 50)
+plt.show()
+print('stop')
