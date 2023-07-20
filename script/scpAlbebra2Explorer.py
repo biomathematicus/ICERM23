@@ -8,6 +8,22 @@ def funCSVCol(sFile, sColumn):
             return [row[sColumn] for row in reader]
         else:
             return None
+        
+def extract_columns(csv_file, column_names):
+    data = []
+    with open(csv_file, 'r') as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            extracted_row = []
+            for column_name in column_names:
+                value = row.get(column_name, '')
+                # Convert specific columns to numeric values
+                if column_name == 'column1' or column_name == 'column3':
+                    value = float(value)
+                extracted_row.append(value)
+            data.append(extracted_row)
+    return data
+       
 
 def funWordPos(sWord, cList):
     i = -1
@@ -63,9 +79,12 @@ cVar = ['LEA_STATE',
 'TOT_MATHENR_ALG2_F']
 cNumType = [0,0,0,0,0,0,0,1,1]
 
-#First, using libraries
-cData = funCSVCol(sFile, 'TOT_MATHENR_ALG2_M')
+#First, using libraries courtesy of ChatGPT
+#cNum = ['TOT_MATHENR_ALG2_M','TOT_MATHENR_ALG2_F']
+#cData = funCSVCol(sFile, 'TOT_MATHENR_ALG2_M')
+#cData = extract_columns(sFile, cVar, cNum)
 
+# Hard-core implementation without libraries
 cData = funFile2Lst(cVar, cNumType, sFile)
 mFemale = np.array(cData[8])
 mMale = np.array(cData[7])
@@ -73,6 +92,6 @@ idxF = mFemale != -9
 idxM = mMale != -9
 print('Female: ', sum(mFemale[idxF]))
 print('Male  : ', sum(mMale[idxM]))
-print('Districts with males in Alg II  : ', sum(idxM))
-print('Districts with females in Alg II: ', sum(idxF))
+print('Schools with males in Alg II  : ', sum(idxM))
+print('Schools with females in Alg II: ', sum(idxF))
 
