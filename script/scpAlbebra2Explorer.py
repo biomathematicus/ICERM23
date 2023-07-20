@@ -55,8 +55,15 @@ print('School with large Alg II FEMALE enrollment: ',funGetSublist(idxLargeMale,
 # Visualize results
 plt.figure(1)
 plt.hist(mMale[idxM], 50)
+plt.xlabel('Number of Male Students')
+plt.ylabel('Number of Schools')
+plt.title('Number of Male Students Enrolled in Algebra 2')
 plt.savefig('./figure/test1.png')
+
 plt.figure(2)
 plt.hist(mFemale[idxF], 50)
+plt.xlabel('Number of Female Students')
+plt.ylabel('Number of Schools')
+plt.title('Number of Female Students Enrolled in Algebra 2')
 plt.savefig('./figure/test2.png')
 print('stop')
