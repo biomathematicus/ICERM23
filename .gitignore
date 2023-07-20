@@ -2,3 +2,6 @@ data/
 report/
 doc/
 **/.DS_Store
+**/*.pyc
+.vscode/
+**/__pycache__
