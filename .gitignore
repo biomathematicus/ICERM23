@@ -1,6 +1,7 @@
 data/
 report/
 doc/
+figure/
 **/.DS_Store
 **/*.pyc
 .vscode/
