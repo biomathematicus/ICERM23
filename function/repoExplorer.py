@@ -1,5 +1,9 @@
+import  numpy as np
+import  csv
+from    itertools import compress
+
 def funCSVCol(sFile, sColumn):
-    with open(sFile, 'r') as file:
+    with open(sFile, 'r', encoding='cp1252') as file:
         reader = csv.DictReader(file)
         if sColumn in reader.fieldnames:
             return [row[sColumn] for row in reader]
@@ -8,7 +12,7 @@ def funCSVCol(sFile, sColumn):
         
 def extract_columns(csv_file, column_names, numeric_columns):
     data = []
-    with open(csv_file, 'r') as file:
+    with open(csv_file, 'r', encoding='cp1252') as file:
         reader = csv.DictReader(file)
         for row in reader:
             extracted_row = []
@@ -37,7 +41,7 @@ def funStr2Lst(s):
 
 def funColumn(nCol, bNum, sFile):
     out = []
-    with open(sFile) as oFile:
+    with open(sFile, encoding='cp1252') as oFile:
         next(oFile)
         for s in oFile:
             l = funStr2Lst(s) 
@@ -47,7 +51,7 @@ def funColumn(nCol, bNum, sFile):
     return out    
 
 def funHeader(sFile):
-    f = open(sFile, "r")
+    f = open(sFile, "r", encoding='cp1252')
     cHeader = funStr2Lst(f.read())
     f.close()
     return cHeader
@@ -63,10 +67,9 @@ def funFile2Lst(cVar, cType, sFile):
         i += 1
     return out
 
-def funListElemByIndex(idx, cList):
+def funGetSublist(idx, cList):
     pos = list(compress(range(len(idx)), idx))
     out = []
     for n in pos:
         out.append(cList[n])
     return out
-
