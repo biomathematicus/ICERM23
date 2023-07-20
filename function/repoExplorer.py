@@ -2,6 +2,7 @@ import  numpy as np
 import  csv
 from    itertools import compress
 
+
 def funCSVCol(sFile, sColumn):
     with open(sFile, 'r', encoding='cp1252') as file:
         reader = csv.DictReader(file)
@@ -9,7 +10,8 @@ def funCSVCol(sFile, sColumn):
             return [row[sColumn] for row in reader]
         else:
             return None
-        
+
+
 def extract_columns(csv_file, column_names, numeric_columns):
     data = []
     with open(csv_file, 'r', encoding='cp1252') as file:
@@ -33,11 +35,13 @@ def funWordPos(sWord, cList):
             return i
     return i
 
+
 def funStr2Lst(s):
     s = s.replace('"', '')
     s = s.rstrip('\n')
     l = s.split(',')   
     return l
+
 
 def funColumn(nCol, bNum, sFile):
     out = []
@@ -50,11 +54,13 @@ def funColumn(nCol, bNum, sFile):
         out = [int(x) for x in out]
     return out    
 
+
 def funHeader(sFile):
     f = open(sFile, "r", encoding='cp1252')
     cHeader = funStr2Lst(f.read())
     f.close()
     return cHeader
+
 
 def funFile2Lst(cVar, cType, sFile):
     out = []
@@ -66,6 +72,7 @@ def funFile2Lst(cVar, cType, sFile):
         out.append(cCol)
         i += 1
     return out
+
 
 def funGetSublist(idx, cList):
     pos = list(compress(range(len(idx)), idx))
