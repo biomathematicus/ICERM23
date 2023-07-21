@@ -5,7 +5,14 @@ import  csv
 from    itertools import compress
 # add function folder
 sys.path.append('./function')
+sys.path.append('./class')
 from repoExplorer import funCSVCol, funFile2Lst, funGetSublist
+from clsLEA import clsLEA
+
+# Sample of using the LEA class
+oLEA = clsLEA()
+# Retireve enrolled students in district 0699967
+print(oLEA.dEnrolment['0699967'])
 
 sFile = './data/2017-18-crdc-data/2017-18 Public-Use Files/Data/SCH/CRDC/CSV/Algebra II.csv'
 cVar = ['LEA_STATE',

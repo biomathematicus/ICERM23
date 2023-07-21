@@ -5,7 +5,7 @@ import  csv
 from    itertools import compress
 # add function folder
 sys.path.append('./function')
-from repoExplorer import funCSVCol, funFile2Lst, funGetSublist
+from repoExplorer import funCSVCol, funFile2Lst, funGetSublist, funDict
 
 sFile = './data/2017-18-crdc-data/2017-18 Public-Use Files/Data/SCH/CRDC/CSV/Algebra II.csv'
 cVar = ['LEA_STATE',
@@ -39,14 +39,7 @@ mTotal = np.add(mMale,mFemale) # Do we need to check for negatives here?
 iMissing = 0
 
 # Perform district-level aggregation by LEAID into dict dAlg2
-dAlg2 = {}
-for (k,v) in zip(cLeaid,mTotal):
-    if v < 0:
-        iMissing += 1
-        continue
-    if k in dAlg2.keys():
-        dAlg2[k] += v
-    else:
-        dAlg2[k] = v
+
+dAlg2, nMissing = funDict(cLeaid,mTotal)
 
 print(dAlg2['0100005'])
