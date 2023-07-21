@@ -29,41 +29,19 @@ cData = funFile2Lst(cVar, cNumType, sFile)
 
 # Extract variables that will be used
 cState = cData[1]
+cLeaid = cData[2]
 cDistrict = cData[3]
 cSchool = cData[5]
 mMale = np.array(cData[7])
 mFemale = np.array(cData[8])
+mTotal = np.add(mMale,mFemale) # Do we need to check for negatives here?
 
-# Create indexes for filtering data
-idxF = mFemale > 0
-idxM = mMale > 0
-idxLargeMale = mMale > 750
-idxLargeFemale = mFemale > 750
+# Perform district-level aggregation by LEAID into dict dAlg2
+dAlg2 = {}
+for (k,v) in zip(cLeaid,mTotal):
+    if k in dAlg2.keys():
+        dAlg2[k] += v
+    else:
+        dAlg2[k] = v
 
-# See results 
-print('Female: ', sum(mFemale[idxF]))
-print('Male  : ', sum(mMale[idxM]))
-print('Schools with males in Alg II  : ', sum(idxM))
-print('Schools with females in Alg II: ', sum(idxF))
-print('States with large Alg II MALE enrollment: ',funGetSublist(idxLargeMale, cState))
-print('Districts with large Alg II MALE enrollment: ',funGetSublist(idxLargeMale, cDistrict))
-print('School with large Alg II MALE enrollment: ',funGetSublist(idxLargeMale, cSchool))
-print('States with large Alg II FEMALE enrollment: ',funGetSublist(idxLargeMale, cState))
-print('Districts with large Alg II FEMALE enrollment: ',funGetSublist(idxLargeMale, cDistrict))
-print('School with large Alg II FEMALE enrollment: ',funGetSublist(idxLargeMale, cSchool))
-
-# Visualize results
-plt.figure(1)
-plt.hist(mMale[idxM], 50)
-plt.xlabel('Number of Male Students')
-plt.ylabel('Number of Schools')
-plt.title('Number of Male Students Enrolled in Algebra 2')
-plt.savefig('./figure/test1.png')
-
-plt.figure(2)
-plt.hist(mFemale[idxF], 50)
-plt.xlabel('Number of Female Students')
-plt.ylabel('Number of Schools')
-plt.title('Number of Female Students Enrolled in Algebra 2')
-plt.savefig('./figure/test2.png')
-print('stop')
+print(dAlg2['0100002'])
