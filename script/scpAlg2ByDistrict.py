@@ -36,12 +36,17 @@ mMale = np.array(cData[7])
 mFemale = np.array(cData[8])
 mTotal = np.add(mMale,mFemale) # Do we need to check for negatives here?
 
+iMissing = 0
+
 # Perform district-level aggregation by LEAID into dict dAlg2
 dAlg2 = {}
 for (k,v) in zip(cLeaid,mTotal):
+    if v < 0:
+        iMissing += 1
+        continue
     if k in dAlg2.keys():
         dAlg2[k] += v
     else:
         dAlg2[k] = v
 
-print(dAlg2['0100002'])
+print(dAlg2['0100005'])
